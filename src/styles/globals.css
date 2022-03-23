@@ -1,0 +1,33 @@
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header,
+main {
+  margin-bottom: 30px;
+}
+
+footer {
+  margin-top: auto;
+}
+
+svg.star-svg {
+  display: inline;
+}
+
+.show-more-text-anchor {
+  color: blue;
+  text-decoration: underline;
+}
+
+.chakra-avatar:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.active_image:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
