@@ -16,7 +16,7 @@ import { ReviewForm } from "components/reviews/ReviewForm";
 import { TravelSpotDetail } from "components/travel_spots/TravelSpotDetail";
 import { Reviews } from "components/reviews/Reviews";
 import { Images } from "components/travel_spots/Images";
-import { GoogleMap } from "components/travel_spots/GoogleMap";
+import { Access } from "components/travel_spots/Access";
 
 import {
   Box,
@@ -35,7 +35,6 @@ import {
   Image,
   VStack,
   HStack,
-  Text,
 } from "@chakra-ui/react";
 
 const TABS = ["旅行先詳細", "レビュー", "画像", "アクセス"];
@@ -94,25 +93,10 @@ const TravelSpot = () => {
       case "レビュー":
         return <Reviews reviews={travelSpot.reviews} mutate={{ mutate, url: BASE_URL }} />;
       case "画像":
-        return <Images travelSpot={travelSpot} />;
+        images = travelSpot.reviews.flatMap((review) => review.images.map((image) => image));
+        return <Images images={images} />;
       case "アクセス":
-        return (
-          <Box>
-            <HStack mb={4}>
-              <Heading size="sm">住所：</Heading>
-              <Text>{travelSpot.fullAddress}</Text>
-            </HStack>
-            <HStack mb={4}>
-              <Heading size="sm">アクセス：</Heading>
-              <Text>{travelSpot.access}</Text>
-            </HStack>
-            <HStack mb={4}>
-              <Heading size="sm">駐車場：</Heading>
-              <Text>{travelSpot.parking}</Text>
-            </HStack>
-            <GoogleMap travelSpots={[travelSpot]} zoom={5} />
-          </Box>
-        );
+        return <Access travelSpot={travelSpot} />;
       default:
         return null;
     }
@@ -133,7 +117,9 @@ const TravelSpot = () => {
 
       <Container maxW="container.lg" mt={10}>
         <VStack mb={5}>
-          <Heading size="lg">{travelSpot.name}</Heading>
+          <Heading size="lg" isTruncated>
+            {travelSpot.name}
+          </Heading>
           <ShowMoreText more="全文表示" less="閉じる" width={1000} anchorClass="show-more-text-anchor">
             {travelSpot.introduction}
           </ShowMoreText>
@@ -170,7 +156,7 @@ const TravelSpot = () => {
         </Drawer>
 
         <VStack>
-          <Heading size="md" my={5}>
+          <Heading size="md" my={5} isTruncated>
             レビュー投稿
           </Heading>
         </VStack>

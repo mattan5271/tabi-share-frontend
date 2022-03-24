@@ -66,7 +66,7 @@ export const Reviews = (props) => {
             <Text>{review.body}</Text>
           </Box>
 
-          <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={2} mt={3}>
+          <Grid templateColumns="repeat(4, 1fr)" gap={2} mt={3}>
             {review.images.map((image, index) => (
               <GridItem key={index}>
                 <Zoom zoomMargin={30}>

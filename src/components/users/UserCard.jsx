@@ -27,7 +27,7 @@ export const UserCard = (props) => {
 
         <Box p={6}>
           <Stack spacing={0} align={"center"} mb={5}>
-            <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
+            <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"} isTruncated>
               {props.user.name}
             </Heading>
             <ShowMoreText more="全文表示" less="閉じる" width={500} anchorClass="show-more-text-anchor">

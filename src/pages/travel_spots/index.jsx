@@ -7,7 +7,7 @@ import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { TravelSpotCard } from "components/travel_spots/TravelSpotCard";
 
 import { ViewIcon } from "@chakra-ui/icons";
-import { Box, Grid, GridItem, Select, Center, Button } from "@chakra-ui/react";
+import { Box, SimpleGrid, Grid, GridItem, Select, Center, Button } from "@chakra-ui/react";
 
 const TravelSpots = () => {
   const BASE_URL = "/travel_spots";
@@ -34,13 +34,11 @@ const TravelSpots = () => {
         </Select>
       </Center>
 
-      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4} mb={10}>
+      <SimpleGrid columns={4} spacing={5} mb={10}>
         {travelSpots.slice(0, loadIndex).map((travelSpot) => (
-          <GridItem key={travelSpot.id}>
-            <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} />
-          </GridItem>
+          <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} key={travelSpot.id} />
         ))}
-      </Grid>
+      </SimpleGrid>
 
       <Center>
         <Button leftIcon={<ViewIcon />} colorScheme="teal" variant="outline" onClick={() => setLoadIndex(loadIndex + 20)} isDisabled={loadIndex >= travelSpots.length}>

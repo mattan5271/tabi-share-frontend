@@ -3,12 +3,12 @@ import NextImage from "next/image";
 import { NextLink } from "components/other/NextLink";
 
 import { FaTwitter, FaGithub } from "react-icons/fa";
-import { Box, chakra, Container, Stack, Text, useColorModeValue, VisuallyHidden } from "@chakra-ui/react";
+import { Box, chakra, Container, Stack, VStack, Text, VisuallyHidden } from "@chakra-ui/react";
 
 const SocialButton = ({ children, label, href }) => {
   return (
     <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+      bg="blackAlpha.100"
       rounded={"full"}
       w={8}
       h={8}
@@ -20,7 +20,7 @@ const SocialButton = ({ children, label, href }) => {
       justifyContent={"center"}
       transition={"background 0.3s ease"}
       _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+        bg: "blackAlpha.200",
       }}
       target="_blank"
     >
@@ -32,16 +32,16 @@ const SocialButton = ({ children, label, href }) => {
 
 export const Footer = () => {
   return (
-    <Box bg={useColorModeValue("gray.100", "gray.900")} color={useColorModeValue("white.700", "gray.200")}>
+    <Box bg="gray.300" color="white.700">
       <Container as={Stack} maxW={"6xl"} py={4} spacing={4} justify={"center"} align={"center"}>
         <NextImage src="/logo.png" alt="ロゴ" width={180} height={70} />
-        <Stack direction={"row"} spacing={6}>
+        <VStack>
           <NextLink href={"/"}>ホーム</NextLink>
           <NextLink href={"/travel_spots/new"}>旅行先作成</NextLink>
-        </Stack>
+        </VStack>
       </Container>
 
-      <Box borderTopWidth={1} borderStyle={"solid"} borderColor={useColorModeValue("gray.200", "gray.700")}>
+      <Box borderTopWidth={1} borderStyle={"solid"} borderColor="gray.200">
         <Container
           as={Stack}
           maxW={"6xl"}

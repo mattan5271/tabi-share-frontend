@@ -49,7 +49,7 @@ const SignIn = () => {
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"gray.50"}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
-            <Heading fontSize={"4xl"}>ログイン</Heading>
+            <Heading fontSize={"4xl"} isTruncated>ログイン</Heading>
           </Stack>
 
           <Box rounded={"lg"} bg={"white"} boxShadow={"lg"} p={8}>

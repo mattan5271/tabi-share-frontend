@@ -11,6 +11,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { FaCrown } from "react-icons/fa";
 import {
   Box,
+  SimpleGrid,
   Grid,
   GridItem,
   Heading,
@@ -71,15 +72,16 @@ const Home = () => {
 
   return (
     <Box>
-      <Heading size="lg" mb={5}>
+      <Heading size="lg" mb={3} isTruncated>
         現在地から探す
       </Heading>
       <GoogleMap travelSpots={travelSpots} zoom={10} />
 
-      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(1, 1fr)" gap={4}>
-        <GridItem>
+      <Grid templateColumns="repeat(12, 1fr)" my={10}>
+        <GridItem colSpan={1} />
+        <GridItem colSpan={10}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl id="keyword" mb={4} isInvalid={!!errors.keyword}>
+            <FormControl id="keyword" isInvalid={!!errors.keyword}>
               <InputGroup>
                 <InputRightElement>
                   <IconButton type="submit" colorScheme="blue" icon={<SearchIcon />} />
@@ -90,14 +92,15 @@ const Home = () => {
             </FormControl>
           </form>
         </GridItem>
+        <GridItem colSpan={1} />
       </Grid>
 
-      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(2, 1fr)" gap={4}>
-        <GridItem>
-          <Heading size="lg" my={5}>
+      <Grid templateColumns="repeat(12, 1fr)">
+        <GridItem colSpan={7}>
+          <Heading size="lg" mb={3} isTruncated>
             ジャンルから探す
           </Heading>
-          <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
+          <Grid templateColumns="repeat(4, 1fr)" gap={4}>
             {genres.map((genre) => (
               <GridItem key={genre.id}>
                 <NextImage
@@ -114,11 +117,13 @@ const Home = () => {
           </Grid>
         </GridItem>
 
-        <GridItem ml={10}>
-          <Heading size="lg" my={5}>
+        <GridItem colSpan={1}></GridItem>
+
+        <GridItem colSpan={4}>
+          <Heading size="lg" mb={3} isTruncated>
             評価ランキング
           </Heading>
-          <Table variant="simple" mb={10}>
+          <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>順位</Th>
@@ -136,15 +141,11 @@ const Home = () => {
               ))}
             </Tbody>
           </Table>
-        </GridItem>
 
-        <GridItem></GridItem>
-
-        <GridItem ml={10}>
-          <Heading size="lg" my={5}>
+          <Heading size="lg" mt={10} mb={3} isTruncated>
             レビュー数ランキング
           </Heading>
-          <Table variant="simple" mb={10}>
+          <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>順位</Th>
@@ -162,15 +163,11 @@ const Home = () => {
               ))}
             </Tbody>
           </Table>
-        </GridItem>
 
-        <GridItem></GridItem>
-
-        <GridItem ml={10}>
-          <Heading size="lg" my={5}>
+          <Heading size="lg" mt={10} mb={3} isTruncated>
             「行きたい！」ランキング
           </Heading>
-          <Table variant="simple" mb={10}>
+          <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>順位</Th>

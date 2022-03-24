@@ -24,7 +24,7 @@ export const GoogleMap = (props) => {
 
   return (
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => setMapSize(new window.google.maps.Size(0, -45))}>
-      <Map mapContainerStyle={{ width: "100%", height: "50vh", marginBottom: "30px" }} center={currentLocation} zoom={props.zoom}>
+      <Map mapContainerStyle={{ width: "100%", height: "50vh" }} center={currentLocation} zoom={props.zoom}>
         {props.travelSpots.map((travelSpot) => (
           <Box key={travelSpot.id}>
             <Marker position={{ lat: travelSpot.latitude, lng: travelSpot.longitude }} />

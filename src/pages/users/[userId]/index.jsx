@@ -51,7 +51,7 @@ const TravelSpots = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
+            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               {user.travelSpots.map((travelSpot) => (
                 <GridItem key={travelSpot.id}>
                   <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} />
@@ -60,7 +60,7 @@ const TravelSpots = () => {
             </Grid>
           </TabPanel>
           <TabPanel>
-            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
+            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               {user.favoritedTravelSpots.map((travelSpot) => (
                 <GridItem key={travelSpot.id}>
                   <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} />
@@ -74,7 +74,7 @@ const TravelSpots = () => {
             </Container>
           </TabPanel>
           <TabPanel>
-            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
+            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               {user.followings.map((user) => (
                 <GridItem key={user.id}>
                   <UserCard user={user} mutate={{ mutate, url: apiUrl }} />
@@ -83,7 +83,7 @@ const TravelSpots = () => {
             </Grid>
           </TabPanel>
           <TabPanel>
-            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
+            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               {user.followers.map((user) => (
                 <GridItem key={user.id}>
                   <UserCard user={user} mutate={{ mutate, url: apiUrl }} />
