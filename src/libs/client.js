@@ -8,7 +8,6 @@ export const client = applyCaseMiddleware(
     headers: {
       "Content-Type": "application/json",
       "X-Requested-With": "XMLHttpRequest",
-      "Access-Control-Allow-Origin": "*",
     },
   })
 );
