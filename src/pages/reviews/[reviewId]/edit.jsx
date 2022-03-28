@@ -47,8 +47,6 @@ const AdminReviewEdit = () => {
     }
   }, [review]);
 
-  console.log(previewImageUrls);
-
   if (reviewIsLoading || userIsLoading || travelSpotIsLoading) return <LoadingSpinner />;
   if (reviewIsError || userIsError || travelSpotIsError)
     return <Error statusCode={reviewError?.response?.status || userError?.response?.status || travelSpotError?.response?.status || 500} />;
