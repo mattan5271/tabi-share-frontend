@@ -1,17 +1,19 @@
+import { NextPage } from "next";
 import Error from "next/error";
 
 import { useGetRequest } from "hooks/useGetRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { GenresTable } from "components/genres/GenresTable";
+import { Genre } from "types";
 
-const AdminGenres = () => {
+const AdminGenres: NextPage = () => {
   useAdminAuthControl();
-  const BASE_URL = "/admin/genres";
-  const { data: genres, error, isLoading, isError, mutate } = useGetRequest(BASE_URL);
+  const BASE_URL: string = "/admin/genres";
+  const { data: genres, error, isLoading, mutate } = useGetRequest<Genre[]>(BASE_URL);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
 
   return <GenresTable genres={genres} mutate={{ mutate, url: BASE_URL }} />;
 };

@@ -1,5 +1,6 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -8,25 +9,26 @@ import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { GenreForm } from "components/genres/GenreForm";
+import { Genre, Image } from "types";
 
-const AdminGenreEdit = () => {
+const AdminGenreEdit: NextPage = () => {
   useAdminAuthControl();
-  const BASE_URL = "/admin/genres";
-  const router = useRouter();
-  const genreId = router.query.genreId;
-  const [image, setImage] = useState(null);
-  const [previewImageUrl, setPreviewImageUrl] = useState("");
+  const BASE_URL: string = "/admin/genres";
+  const router: NextRouter = useRouter();
+  const genreId: string | string[] | undefined = router.query.genreId;
+  const [image, setImage] = useState<Image>();
+  const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePatchRequest } = useHandleRequest();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<Genre>();
 
-  const { data: genre, error, isLoading, isError } = useGetRequest(`${BASE_URL}/${genreId}`);
+  const { data: genre, error, isLoading } = useGetRequest(`${BASE_URL}/${genreId}`);
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: Genre): void => {
     handlePatchRequest({
       apiUrl: `${BASE_URL}/${genreId}`,
       params: { ...inputData, image },
@@ -43,7 +45,7 @@ const AdminGenreEdit = () => {
   }, [genre]);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
 
   return (
     <GenreForm
