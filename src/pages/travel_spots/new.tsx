@@ -1,3 +1,5 @@
+import { NextPage } from "next";
+import Error from "next/error";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -6,25 +8,26 @@ import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { TravelSpotForm } from "components/travel_spots/TravelSpotForm";
+import { TravelSpot } from "types";
 
-const AdminTravelSpotNew = () => {
+const AdminTravelSpotNew: NextPage = () => {
   useAdminAuthControl();
-  const BASE_URL = "/admin/travel_spots";
-  const [images, setImages] = useState([]);
-  const [previewImageUrls, setPreviewImageUrls] = useState([]);
+  const BASE_URL: string = "/admin/travel_spots";
+  const [images, setImages] = useState<File[]>([]);
+  const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
   const { handlePostRequest } = useHandleRequest();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<TravelSpot>();
 
-  const { data: users, error: userError, isLoading: userIsLoading, isError: userIsError } = useGetRequest("/admin/users");
-  const { data: genres, error: genreError, isLoading: genreIsLoading, isError: genreIsError } = useGetRequest("/admin/genres");
-  const { data: prefectures, error: prefectureError, isLoading: prefectureIsLoading, isError: prefectureIsError } = useGetRequest("/admin/prefectures");
+  const { data: users, error: userError, isLoading: userIsLoading } = useGetRequest("/admin/users");
+  const { data: genres, error: genreError, isLoading: genreIsLoading } = useGetRequest("/admin/genres");
+  const { data: prefectures, error: prefectureError, isLoading: prefectureIsLoading } = useGetRequest("/admin/prefectures");
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: TravelSpot): void => {
     handlePostRequest({
       apiUrl: BASE_URL,
       params: { ...inputData, images },
@@ -36,7 +39,7 @@ const AdminTravelSpotNew = () => {
   };
 
   if (userIsLoading || genreIsLoading || prefectureIsLoading) return <LoadingSpinner />;
-  if (userIsError || genreIsError || prefectureIsError) {
+  if (userError || genreError || prefectureError) {
     return <Error statusCode={userError?.response?.status || genreError?.response?.status || prefectureError?.response?.status || 500} />;
   }
 

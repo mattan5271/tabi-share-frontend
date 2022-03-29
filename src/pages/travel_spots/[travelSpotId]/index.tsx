@@ -1,5 +1,6 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Rating } from "react-simple-star-rating";
@@ -17,6 +18,7 @@ import { TravelSpotDetail } from "components/travel_spots/TravelSpotDetail";
 import { Reviews } from "components/reviews/Reviews";
 import { Images } from "components/travel_spots/Images";
 import { Access } from "components/travel_spots/Access";
+import { Image as ImageType, Review } from "types";
 
 import {
   Box,
@@ -39,14 +41,24 @@ import {
 
 const TABS = ["旅行先詳細", "レビュー", "画像", "アクセス"];
 
-const TravelSpot = () => {
-  const router = useRouter();
-  const travelSpotId = router.query.travelSpotId;
-  const BASE_URL = `/travel_spots/${travelSpotId}`;
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState([]);
-  const [previewImageUrls, setPreviewImageUrls] = useState([]);
-  const [selectTabName, setSelectTabName] = useState("");
+type sliderSettings = {
+  dots: boolean;
+  autoplay: boolean;
+  pauseOnHover: boolean;
+  infinite: boolean;
+  arrow: boolean;
+  speed: number;
+  slidesToShow: number;
+};
+
+const TravelSpot: NextPage = () => {
+  const router: NextRouter = useRouter();
+  const travelSpotId: string | string[] | undefined = router.query.travelSpotId;
+  const BASE_URL: string = `/travel_spots/${travelSpotId}`;
+  const [rating, setRating] = useState<number>(0);
+  const [images, setImages] = useState<File[]>([]);
+  const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
+  const [selectTabName, setSelectTabName] = useState<string>("");
   const { handlePostRequest } = useHandleRequest();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -54,20 +66,20 @@ const TravelSpot = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
-  const sliderSettings = {
+  } = useForm<Review>();
+  const sliderSettings: sliderSettings = {
     dots: true,
     autoplay: true,
     pauseOnHover: true,
     infinite: true,
-    speed: 1000,
     arrow: true,
+    speed: 1000,
     slidesToShow: 2.5,
   };
 
-  const { data: travelSpot, error, isLoading, isError, mutate } = useGetRequest(BASE_URL);
+  const { data: travelSpot, error, isLoading, mutate } = useGetRequest(BASE_URL);
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: Review): void => {
     handlePostRequest({
       apiUrl: "/reviews",
       params: { ...inputData, images, rating, travelSpotId },
@@ -81,19 +93,19 @@ const TravelSpot = () => {
     setPreviewImageUrls([]);
   };
 
-  const clickTab = (contentName) => {
+  const clickTab = (contentName: string): void => {
     setSelectTabName(contentName);
     onOpen();
   };
 
-  const DrawerDetail = () => {
+  const DrawerDetail = (): JSX.Element | null => {
     switch (selectTabName) {
       case "旅行先詳細":
         return <TravelSpotDetail travelSpot={travelSpot} />;
       case "レビュー":
         return <Reviews reviews={travelSpot.reviews} mutate={{ mutate, url: BASE_URL }} />;
       case "画像":
-        images = travelSpot.reviews.flatMap((review) => review.images.map((image) => image));
+        const images: ImageType[] = travelSpot.reviews.flatMap((review: Review) => review.images.map((image: ImageType) => image));
         return <Images images={images} />;
       case "アクセス":
         return <Access travelSpot={travelSpot} />;
@@ -103,14 +115,14 @@ const TravelSpot = () => {
   };
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
 
   return (
     <Box>
       <Container maxW="container.xl">
         <Slider {...sliderSettings}>
-          {travelSpot.images.map((image) => (
-            <Image src={image ? image.url : "/no_image.jpeg"} alt={`${travelSpot.name}の画像`} height={400} key={image} />
+          {travelSpot.images.map((image: ImageType) => (
+            <Image src={image ? image.url : "/no_image.jpeg"} alt={`${travelSpot.name}の画像`} height={400} key={image.url} />
           ))}
         </Slider>
       </Container>

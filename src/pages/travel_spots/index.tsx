@@ -1,26 +1,28 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useState } from "react";
 
 import { useGetRequest } from "hooks/useGetRequest";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { TravelSpotCard } from "components/travel_spots/TravelSpotCard";
+import { TravelSpot } from "types";
 
 import { ViewIcon } from "@chakra-ui/icons";
-import { Box, SimpleGrid, Grid, GridItem, Select, Center, Button } from "@chakra-ui/react";
+import { Box, SimpleGrid, Select, Center, Button } from "@chakra-ui/react";
 
-const TravelSpots = () => {
-  const BASE_URL = "/travel_spots";
-  const router = useRouter();
-  const query = new URLSearchParams(router.query).toString();
-  const [sortValue, setSortValue] = useState("recommend");
-  const [loadIndex, setLoadIndex] = useState(20);
-  const apiUrl = `${BASE_URL}/?${query}&sort=${sortValue}`;
+const TravelSpots: NextPage = () => {
+  const BASE_URL: string = "/travel_spots";
+  const router: NextRouter = useRouter();
+  const query: string = new URLSearchParams(router.query).toString();
+  const [sortValue, setSortValue] = useState<string>("recommend");
+  const [loadIndex, setLoadIndex] = useState<number>(20);
+  const apiUrl: string = `${BASE_URL}/?${query}&sort=${sortValue}`;
 
-  const { data: travelSpots, error, isLoading, isError, mutate } = useGetRequest(apiUrl);
+  const { data: travelSpots, error, isLoading, mutate } = useGetRequest(apiUrl);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
   if (!travelSpots.length) return <Center>検索条件に一致する旅行先が存在しません</Center>;
 
   return (
@@ -35,7 +37,7 @@ const TravelSpots = () => {
       </Center>
 
       <SimpleGrid columns={4} spacing={5} mb={10}>
-        {travelSpots.slice(0, loadIndex).map((travelSpot) => (
+        {travelSpots.slice(0, loadIndex).map((travelSpot: TravelSpot) => (
           <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} key={travelSpot.id} />
         ))}
       </SimpleGrid>

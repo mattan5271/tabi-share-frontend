@@ -13,7 +13,7 @@ type Props = {
   params: any;
   modelJa: string;
   modelEn: string;
-  redirectPath: string;
+  redirectPath?: string;
   mutate?: { mutate: ScopedMutator<any>; url: string };
 };
 
