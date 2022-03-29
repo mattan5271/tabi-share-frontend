@@ -1,39 +1,41 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { NextRouter, useRouter } from "next/router";
+import { useEffect, useState, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
+import { AxiosError, AxiosResponse } from "axios";
 import toast from "react-hot-toast";
 
 import { client } from "libs/client";
 import { userState } from "stores/userState";
 import { NextLink } from "components/other/NextLink";
+import { User } from "types";
 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Flex, Box, Badge, FormControl, FormLabel, Input, InputGroup, InputRightElement, FormErrorMessage, Stack, Button, Heading, Text } from "@chakra-ui/react";
 
-const SignUp = () => {
-  const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+const SignUp: VFC = () => {
+  const router: NextRouter = useRouter();
+  const [showPassword, setShowPassword] = useState<Boolean>(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState<Boolean>(false);
+  const [currentUser, setCurrentUser] = useRecoilState<User>(userState);
   const {
     register,
     handleSubmit,
     getValues,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<User>();
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: User) => {
     client
       .post("/sign_up", inputData)
-      .then((res) => {
+      .then((res: AxiosResponse<User>) => {
         reset();
         router.push("/");
         setCurrentUser(res.data);
         toast.success("サインアップに成功しました");
       })
-      .catch((err) => {
+      .catch((err: AxiosError<{ error: string }>) => {
         console.log(err);
         toast.error("サインアップに失敗しました");
       });

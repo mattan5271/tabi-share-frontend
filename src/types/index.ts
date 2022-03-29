@@ -38,6 +38,7 @@ export type User = {
   id: number;
   email: string;
   password: string;
+  passwordConfirmation: string;
   passwordDigest: string;
   name: string;
   sex: string;
