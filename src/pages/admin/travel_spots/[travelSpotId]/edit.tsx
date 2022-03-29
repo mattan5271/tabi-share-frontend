@@ -31,7 +31,7 @@ const AdminTravelSpotEdit: NextPage = () => {
   const { data: genres, error: genreError, isLoading: genreIsLoading } = useGetRequest("/admin/genres");
   const { data: prefectures, error: prefectureError, isLoading: prefectureIsLoading } = useGetRequest("/admin/prefectures");
 
-  const onSubmit = (inputData: TravelSpot) => {
+  const onSubmit = (inputData: TravelSpot): void => {
     handlePatchRequest({
       apiUrl: `${BASE_URL}/${travelSpotId}`,
       params: { ...inputData, images },
