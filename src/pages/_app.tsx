@@ -1,3 +1,5 @@
+import { AppProps } from "next/app";
+import { VFC } from "react";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Toaster } from "react-hot-toast";
@@ -9,7 +11,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "react-medium-image-zoom/dist/styles.css";
 
-function MyApp({ Component, pageProps }) {
+const TabiShare: VFC<AppProps> = ({ Component, pageProps }) => {
   return (
     <RecoilRoot>
       <ChakraProvider>
@@ -20,6 +22,6 @@ function MyApp({ Component, pageProps }) {
       </ChakraProvider>
     </RecoilRoot>
   );
-}
+};
 
-export default MyApp;
+export default TabiShare;
