@@ -5,13 +5,13 @@ import { useForm } from "react-hook-form";
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { GenreForm } from "components/genres/GenreForm";
-import { Image, User } from "types";
+import { User } from "types";
 
 const AdminGenreNew: NextPage = () => {
   useAdminAuthControl();
   const BASE_URL: string = "/admin/genres";
-  const [image, setImage] = useState<Image>();
-  const [previewImageUrl, setPreviewImageUrl] = useState<String>("");
+  const [image, setImage] = useState<File>();
+  const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePostRequest } = useHandleRequest();
   const {
     register,

@@ -15,7 +15,7 @@ import { Flex, Box, FormControl, FormLabel, FormErrorMessage, Input, InputGroup,
 
 const SignIn: VFC = () => {
   const router: NextRouter = useRouter();
-  const [showPassword, setShowPassword] = useState<Boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useRecoilState<User>(userState);
   const {
     register,

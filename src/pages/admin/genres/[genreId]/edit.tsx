@@ -9,14 +9,14 @@ import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { GenreForm } from "components/genres/GenreForm";
-import { Genre, Image } from "types";
+import { Genre } from "types";
 
 const AdminGenreEdit: NextPage = () => {
   useAdminAuthControl();
   const BASE_URL: string = "/admin/genres";
   const router: NextRouter = useRouter();
   const genreId: string | string[] | undefined = router.query.genreId;
-  const [image, setImage] = useState<Image>();
+  const [image, setImage] = useState<File>();
   const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePatchRequest } = useHandleRequest();
   const {

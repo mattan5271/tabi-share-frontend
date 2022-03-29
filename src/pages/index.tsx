@@ -36,13 +36,6 @@ type SearchQuery = {
   genre_id?: number;
 };
 
-type SWR = {
-  data: TravelSpot[];
-  error: Error | null;
-  isLoading: boolean;
-  isError: boolean;
-};
-
 const Home: VFC = () => {
   const router: NextRouter = useRouter();
   const {
