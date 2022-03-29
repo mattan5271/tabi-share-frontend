@@ -2,7 +2,7 @@ import { useRouter, NextRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { client } from "libs/client";
 import { ScopedMutator } from "swr/dist/types";
-import { AxiosResponse, AxiosError } from "axios";
+import { AxiosResponse } from "axios";
 
 type SWR = {
   data: any;
@@ -14,7 +14,7 @@ type SWR = {
 export const useGetRequest = <T>(url: string): SWR => {
   const router: NextRouter = useRouter();
   const { mutate } = useSWRConfig();
-  const fetcher = (url: string): Promise<AxiosResponse<T, AxiosError>> => client.get(url);
+  const fetcher = (url: string): Promise<AxiosResponse<T>> => client.get(url);
 
   // router.isReadyがtrueになっていないとidが取れないので動的ルーティングでSWRがundefinedを返してしまう
   const { data, error } = useSWR(router.isReady ? url : null, fetcher);

@@ -1,37 +1,39 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { NextRouter, useRouter } from "next/router";
+import { useEffect, useState, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
+import { AxiosError, AxiosResponse } from "axios";
 import toast from "react-hot-toast";
 
 import { client } from "libs/client";
 import { userState } from "stores/userState";
 import { NextLink } from "components/other/NextLink";
+import { User } from "types";
 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Flex, Box, FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text } from "@chakra-ui/react";
 
-const SignIn = () => {
-  const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+const SignIn: VFC = () => {
+  const router: NextRouter = useRouter();
+  const [showPassword, setShowPassword] = useState<Boolean>(false);
+  const [currentUser, setCurrentUser] = useRecoilState<User>(userState);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<User>();
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: User): void => {
     client
       .post("/sign_in", inputData)
-      .then((res) => {
+      .then((res: AxiosResponse<User>) => {
         reset();
         router.push("/");
         setCurrentUser(res.data);
         toast.success("サインインに成功しました");
       })
-      .catch((err) => {
+      .catch((err: AxiosError<{ error: string }>) => {
         console.log(err);
         toast.error("サインインに失敗しました");
       });
@@ -49,7 +51,9 @@ const SignIn = () => {
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"gray.50"}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
-            <Heading fontSize={"4xl"} isTruncated>ログイン</Heading>
+            <Heading fontSize={"4xl"} isTruncated>
+              ログイン
+            </Heading>
           </Stack>
 
           <Box rounded={"lg"} bg={"white"} boxShadow={"lg"} p={8}>

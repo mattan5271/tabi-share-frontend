@@ -37,6 +37,7 @@ export type TravelSpot = {
 export type User = {
   id: number;
   email: string;
+  password: string;
   passwordDigest: string;
   name: string;
   sex: string;
