@@ -1,17 +1,18 @@
 import Error from "next/error";
 import NextImage from "next/image";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
+import { VFC } from "react";
 import { useForm } from "react-hook-form";
 
 import { useGetRequest } from "hooks/useGetRequest";
 import { GoogleMap } from "components/travel_spots/GoogleMap";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
+import { Genre, TravelSpot } from "types";
 
 import { SearchIcon } from "@chakra-ui/icons";
 import { FaCrown } from "react-icons/fa";
 import {
   Box,
-  SimpleGrid,
   Grid,
   GridItem,
   Heading,
@@ -30,32 +31,57 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Home = () => {
-  const router = useRouter();
+type SearchQuery = {
+  keyword?: string;
+  genre_id?: number;
+};
+
+type SWR = {
+  data: TravelSpot[];
+  error: Error | null;
+  isLoading: boolean;
+  isError: boolean;
+};
+
+const Home: VFC = () => {
+  const router: NextRouter = useRouter();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<Pick<SearchQuery, "keyword">>();
 
-  const { data: travelSpots, error: travelSpotsError, isLoading: travelSpotsIsLoading, isError: travelSpotsIsError } = useGetRequest("/travel_spots");
-  const { data: genres, error: genresError, isLoading: genresIsLoading, isError: genresIsError } = useGetRequest("/admin/genres");
-  const { data: rateRank, error: rateRankError, isLoading: rateRankIsLoading, isError: rateRankIsError } = useGetRequest("/travel_spots/rate_ranking");
-  const { data: favRank, error: favRankError, isLoading: favRankIsLoading, isError: favRankIsError } = useGetRequest("/travel_spots/fav_ranking");
-  const { data: reviewRank, error: reviewRankError, isLoading: reviewRankIsLoading, isError: reviewRankIsError } = useGetRequest("/travel_spots/review_ranking");
+  const { data: travelSpots, error: travelSpotsError, isLoading: travelSpotsIsLoading } = useGetRequest<TravelSpot[]>("/travel_spots");
+  const { data: genres, error: genresError, isLoading: genresIsLoading } = useGetRequest<Genre[]>("/admin/genres");
+  const { data: rateRank, error: rateRankError, isLoading: rateRankIsLoading } = useGetRequest<TravelSpot[]>("/travel_spots/rate_ranking");
+  const { data: favRank, error: favRankError, isLoading: favRankIsLoading } = useGetRequest<TravelSpot[]>("/travel_spots/fav_ranking");
+  const { data: reviewRank, error: reviewRankError, isLoading: reviewRankIsLoading } = useGetRequest<TravelSpot[]>("/travel_spots/review_ranking");
 
-  const searchTravelSpots = (query) => {
+  const searchTravelSpots = (query: SearchQuery): void => {
     router.push({ pathname: "/travel_spots", query: query });
   };
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: Pick<SearchQuery, "keyword">): void => {
     searchTravelSpots(inputData);
     reset();
   };
 
+  const crownColor = (index: number): string => {
+    switch (index) {
+      case 0:
+        return "#FFD700";
+      case 1:
+        return "#C0C0C0";
+      case 2:
+        return "#C47222";
+      default:
+        return "";
+    }
+  };
+
   if (travelSpotsIsLoading || genresIsLoading || rateRankIsLoading || favRankIsLoading || reviewRankIsLoading) return <LoadingSpinner />;
-  if (travelSpotsIsError || genresIsError || rateRankIsError || favRankIsError || reviewRankIsError) {
+  if (travelSpotsError || genresError || rateRankError || favRankError || reviewRankError) {
     return (
       <Error
         statusCode={
@@ -84,7 +110,7 @@ const Home = () => {
             <FormControl id="keyword" isInvalid={!!errors.keyword}>
               <InputGroup>
                 <InputRightElement>
-                  <IconButton type="submit" colorScheme="blue" icon={<SearchIcon />} />
+                  <IconButton type="submit" colorScheme="blue" aria-label="keyword_search" icon={<SearchIcon />} />
                 </InputRightElement>
                 <Input type="text" placeholder="キーワード検索" {...register("keyword", { required: "キーワードを入力してください" })} />
               </InputGroup>
@@ -101,7 +127,7 @@ const Home = () => {
             ジャンルから探す
           </Heading>
           <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-            {genres.map((genre) => (
+            {genres.map((genre: Genre) => (
               <GridItem key={genre.id}>
                 <NextImage
                   src={genre.image.url || "/no_image.jpeg"}
@@ -132,9 +158,9 @@ const Home = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {rateRank.map((travelSpot, index) => (
+              {rateRank.map((travelSpot: TravelSpot, index: number) => (
                 <Tr key={index}>
-                  <Td>{index <= 2 ? <FaCrown color={(index === 0 && "#FFD700") || (index === 1 && "#C0C0C0 ") || (index === 2 && "#C47222")} /> : `${index + 1}位`}</Td>
+                  <Td>{index <= 2 ? <FaCrown color={crownColor(index)} /> : `${index + 1}位`}</Td>
                   <Td>{travelSpot.name}</Td>
                   <Td>{travelSpot.rating.toFixed(1)}</Td>
                 </Tr>
@@ -154,9 +180,9 @@ const Home = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {reviewRank.map((travelSpot, index) => (
+              {reviewRank.map((travelSpot: TravelSpot, index: number) => (
                 <Tr key={index}>
-                  <Td>{index <= 2 ? <FaCrown color={(index === 0 && "#FFD700") || (index === 1 && "#C0C0C0 ") || (index === 2 && "#C47222")} /> : `${index + 1}位`}</Td>
+                  <Td>{index <= 2 ? <FaCrown color={crownColor(index)} /> : `${index + 1}位`}</Td>
                   <Td>{travelSpot.name}</Td>
                   <Td>{travelSpot.reviews.length}</Td>
                 </Tr>
@@ -176,9 +202,9 @@ const Home = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {favRank.map((travelSpot, index) => (
+              {favRank.map((travelSpot: TravelSpot, index: number) => (
                 <Tr key={index}>
-                  <Td>{index <= 2 ? <FaCrown color={(index === 0 && "#FFD700") || (index === 1 && "#C0C0C0 ") || (index === 2 && "#C47222")} /> : `${index + 1}位`}</Td>
+                  <Td>{index <= 2 ? <FaCrown color={crownColor(index)} /> : `${index + 1}位`}</Td>
                   <Td>{travelSpot.name}</Td>
                   <Td>{travelSpot.favorites.length}</Td>
                 </Tr>
