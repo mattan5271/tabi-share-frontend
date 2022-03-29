@@ -1,5 +1,6 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -8,28 +9,29 @@ import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { TravelSpotForm } from "components/travel_spots/TravelSpotForm";
+import { Image, TravelSpot } from "types";
 
-const AdminTravelSpotEdit = () => {
+const AdminTravelSpotEdit: NextPage = () => {
   useAdminAuthControl();
-  const BASE_URL = "/admin/travel_spots";
-  const router = useRouter();
-  const travelSpotId = router.query.travelSpotId;
-  const [images, setImages] = useState([]);
-  const [previewImageUrls, setPreviewImageUrls] = useState([]);
+  const BASE_URL: string = "/admin/travel_spots";
+  const router: NextRouter = useRouter();
+  const travelSpotId: string | string[] | undefined = router.query.travelSpotId;
+  const [images, setImages] = useState<File[]>([]);
+  const [previewImageUrls, setPreviewImageUrls] = useState<string[]>([]);
   const { handlePatchRequest } = useHandleRequest();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<TravelSpot>();
 
-  const { data: travelSpot, error: travelSpotError, isLoading: travelSpotIsLoading, isError: travelSpotIsError, mutate } = useGetRequest(`${BASE_URL}/${travelSpotId}`);
-  const { data: users, error: userError, isLoading: userIsLoading, isError: userIsError } = useGetRequest("/admin/users");
-  const { data: genres, error: genreError, isLoading: genreIsLoading, isError: genreIsError } = useGetRequest("/admin/genres");
-  const { data: prefectures, error: prefectureError, isLoading: prefectureIsLoading, isError: prefectureIsError } = useGetRequest("/admin/prefectures");
+  const { data: travelSpot, error: travelSpotError, isLoading: travelSpotIsLoading } = useGetRequest(`${BASE_URL}/${travelSpotId}`);
+  const { data: users, error: userError, isLoading: userIsLoading } = useGetRequest("/admin/users");
+  const { data: genres, error: genreError, isLoading: genreIsLoading } = useGetRequest("/admin/genres");
+  const { data: prefectures, error: prefectureError, isLoading: prefectureIsLoading } = useGetRequest("/admin/prefectures");
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: TravelSpot) => {
     handlePatchRequest({
       apiUrl: `${BASE_URL}/${travelSpotId}`,
       params: { ...inputData, images },
@@ -43,12 +45,12 @@ const AdminTravelSpotEdit = () => {
   useEffect(() => {
     if (travelSpot) {
       reset(travelSpot);
-      if (previewImageUrls.length === 0) setPreviewImageUrls(travelSpot.images.map((image) => image.url));
+      if (previewImageUrls.length === 0) setPreviewImageUrls(travelSpot.images.map((image: Image) => image.url));
     }
   }, [travelSpot]);
 
   if (travelSpotIsLoading || userIsLoading || genreIsLoading || prefectureIsLoading) return <LoadingSpinner />;
-  if (travelSpotIsError || userIsError || genreIsError || prefectureIsError) {
+  if (travelSpotError || userError || genreError || prefectureError) {
     return <Error statusCode={travelSpotError?.response?.status || userError?.response?.status || genreError?.response?.status || prefectureError?.response?.status || 500} />;
   }
 
