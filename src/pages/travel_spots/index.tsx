@@ -14,6 +14,7 @@ import { Box, SimpleGrid, Select, Center, Button } from "@chakra-ui/react";
 const TravelSpots: NextPage = () => {
   const BASE_URL: string = "/travel_spots";
   const router: NextRouter = useRouter();
+  /* @ts-ignore */
   const query: string = new URLSearchParams(router.query).toString();
   const [sortValue, setSortValue] = useState<string>("recommend");
   const [loadIndex, setLoadIndex] = useState<number>(20);
