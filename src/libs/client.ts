@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import applyCaseMiddleware from "axios-case-converter";
 
-export const client = applyCaseMiddleware(
+export const client: AxiosInstance = applyCaseMiddleware(
   axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
