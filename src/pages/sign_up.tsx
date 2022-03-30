@@ -17,7 +17,7 @@ const SignUp: VFC = () => {
   const router: NextRouter = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useRecoilState<User>(userState);
+  const [currentUser, setCurrentUser] = useRecoilState<User | null>(userState);
   const {
     register,
     handleSubmit,

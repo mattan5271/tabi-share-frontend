@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { client } from "libs/client";
 import { useCreateFormData } from "hooks/useCreateFormData";
 import { userState } from "stores/userState";
+import { User } from "types";
 
 type Props = {
   apiUrl: string;
@@ -19,7 +20,7 @@ type Props = {
 
 export const useHandleRequest = () => {
   const router: NextRouter = useRouter();
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [currentUser, setCurrentUser] = useRecoilState<User | null>(userState);
 
   const handlePostRequest = ({ apiUrl, params, modelJa, modelEn, redirectPath, mutate }: Props): Promise<void> => {
     const formData = useCreateFormData({ model: modelEn, params: params });
@@ -42,7 +43,7 @@ export const useHandleRequest = () => {
       .patch(apiUrl, formData)
       .then((res: AxiosResponse) => {
         redirectPath && router.push(redirectPath);
-        if (modelEn == "user" && res.data.id === currentUser.id) setCurrentUser(res.data);
+        if (modelEn == "user" && res.data.id === currentUser?.id) setCurrentUser(res.data);
         toast.success(`${modelJa}の更新に成功しました`);
       })
       .catch((err: AxiosError<{ error: string }>) => {
@@ -55,7 +56,7 @@ export const useHandleRequest = () => {
     return client
       .delete(apiUrl)
       .then((res: AxiosResponse) => {
-        if (modelEn == "user" && res.data.id === currentUser.id) {
+        if (modelEn == "user" && res.data.id === currentUser?.id) {
           router.push("/");
           setCurrentUser(null);
           toast.success("ログインユーザーが削除されたのでサインアウトしました");

@@ -6,7 +6,7 @@ import { User } from "types";
 
 export const useAdminAuthControl = () => {
   const router: NextRouter = useRouter();
-  const [currentUser] = useRecoilState<User>(userState);
+  const [currentUser] = useRecoilState<User | null>(userState);
 
   // 管理者ページの制御
   useEffect(() => {
