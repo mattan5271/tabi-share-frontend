@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { GenreForm } from "components/genres/GenreForm";
-import { User } from "types";
+import { Genre } from "types";
 
 const AdminGenreNew: NextPage = () => {
   useAdminAuthControl();
@@ -18,9 +18,9 @@ const AdminGenreNew: NextPage = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<Genre>();
 
-  const onSubmit = (inputData: User): void => {
+  const onSubmit = (inputData: Genre): void => {
     handlePostRequest({
       apiUrl: BASE_URL,
       params: { ...inputData, image },

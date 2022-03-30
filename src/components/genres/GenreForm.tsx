@@ -1,9 +1,27 @@
+import { ChangeEvent, Dispatch, SetStateAction, VFC } from "react";
+import { FieldError, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
+
 import { useHandleImage } from "hooks/useHandleImage";
+import { Genre } from "types";
 
 import { DownloadIcon } from "@chakra-ui/icons";
 import { Box, VStack, Button, Input, FormControl, FormLabel, FormErrorMessage, Center, Badge, Avatar } from "@chakra-ui/react";
 
-export const GenreForm = (props) => {
+type Props = {
+  setImage: Dispatch<SetStateAction<File | undefined>>;
+  previewImageUrl: string;
+  setPreviewImageUrl: Dispatch<SetStateAction<string>>;
+  handleSubmit: UseFormHandleSubmit<Genre>;
+  onSubmit: (inputData: Genre) => void;
+  register: UseFormRegister<Genre>;
+  errors: {
+    id?: FieldError | undefined;
+    name?: FieldError | undefined;
+    image?: { url?: FieldError | undefined } | undefined;
+  };
+};
+
+export const GenreForm: VFC<Props> = (props) => {
   const { uploadImage } = useHandleImage();
 
   return (
@@ -15,11 +33,11 @@ export const GenreForm = (props) => {
             type="file"
             accept="image/*"
             display="none"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               uploadImage({ event, isMultiple: false, setImgState: props.setImage, setPrevieImgState: props.setPreviewImageUrl });
             }}
           />
-          <Avatar src={props.previewImageUrl || "/no_image.jpeg"} alt="画像" size="2xl" onClick={() => document.getElementById("genre_image").click()} />
+          <Avatar src={props.previewImageUrl || "/no_image.jpeg"} size="2xl" onClick={() => document.getElementById("genre_image")?.click()} />
         </VStack>
 
         <FormControl isInvalid={!!props.errors.name} mb={4}>

@@ -1,8 +1,10 @@
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
+
 type UploadProps = {
-  event: React.ChangeEvent<HTMLInputElement>;
+  event: ChangeEvent<HTMLInputElement>;
   isMultiple: boolean;
-  setImgState: React.Dispatch<React.SetStateAction<File | File[]>>;
-  setPrevieImgState: React.Dispatch<React.SetStateAction<string | string[]>>;
+  setImgState: Dispatch<SetStateAction<any>>;
+  setPrevieImgState: Dispatch<SetStateAction<any>>;
 };
 
 type DeleteProps = {
