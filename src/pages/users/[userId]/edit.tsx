@@ -1,7 +1,9 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { User } from "types";
 
 import { useGetRequest } from "hooks/useGetRequest";
 import { useHandleRequest } from "hooks/useHandleRequest";
@@ -9,24 +11,24 @@ import { useAdminAuthControl } from "hooks/useAdminAuthControl";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
 import { UserForm } from "components/users/UserForm";
 
-const AdminUserEdit = () => {
+const AdminUserEdit: NextPage = () => {
   useAdminAuthControl();
-  const BASE_URL = "/admin/users";
-  const router = useRouter();
-  const userId = router.query.userId;
-  const [profileImage, setProfileImage] = useState(null);
-  const [previewImageUrl, setPreviewImageUrl] = useState("");
+  const BASE_URL: string = "/admin/users";
+  const router: NextRouter = useRouter();
+  const userId: string | string[] | undefined = router.query.userId;
+  const [profileImage, setProfileImage] = useState<File>();
+  const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePatchRequest } = useHandleRequest();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<User>();
 
-  const { data: user, error, isLoading, isError, mutate } = useGetRequest(`${BASE_URL}/${userId}`);
+  const { data: user, error, isLoading } = useGetRequest(`${BASE_URL}/${userId}`);
 
-  const onSubmit = (inputData) => {
+  const onSubmit = (inputData: User): void => {
     handlePatchRequest({
       apiUrl: `${BASE_URL}/${userId}`,
       params: { ...inputData, profileImage },
@@ -44,7 +46,7 @@ const AdminUserEdit = () => {
   }, [user]);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
 
   return (
     <UserForm

@@ -1,5 +1,6 @@
+import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import Zoom from "react-medium-image-zoom";
 import ShowMoreText from "react-show-more-text";
 
@@ -9,27 +10,28 @@ import { TravelSpotCard } from "components/travel_spots/TravelSpotCard";
 import { Reviews } from "components/reviews/Reviews";
 import { UserCard } from "components/users/UserCard";
 import { UserFollowButton } from "components/users/UserFollowButton";
+import { TravelSpot, User } from "types";
 
 import { Box, Container, Grid, GridItem, Text, Tabs, TabList, Tab, TabPanels, TabPanel, VStack, Button, Avatar } from "@chakra-ui/react";
 
-const TABS = ["投稿", "行きたい！", "レビュー", "フォロー中", "フォロワー"];
+const TABS: string[] = ["投稿", "行きたい！", "レビュー", "フォロー中", "フォロワー"];
 
-const TravelSpots = () => {
-  const BASE_URL = "/users";
-  const router = useRouter();
-  const userId = router.query.userId;
-  const apiUrl = `${BASE_URL}/${userId}`;
+const TravelSpots: NextPage = () => {
+  const BASE_URL: string = "/users";
+  const router: NextRouter = useRouter();
+  const userId: string | string[] | undefined = router.query.userId;
+  const apiUrl: string = `${BASE_URL}/${userId}`;
 
-  const { data: user, error, isLoading, isError, mutate } = useGetRequest(apiUrl);
+  const { data: user, error, isLoading, mutate } = useGetRequest(apiUrl);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <Error statusCode={error?.response?.status || 500} />;
+  if (error) return <Error statusCode={error?.response?.status || 500} />;
 
   return (
     <Box>
       <VStack mb={10}>
         <Zoom zoomMargin={30}>
-          <Avatar src={user.profileImage.url || "/no_user_profile_image.png"} alt={"プロフィール画像"} size="2xl" />
+          <Avatar src={user.profileImage.url || "/no_user_profile_image.png"} size="2xl" />
         </Zoom>
 
         <Text fontWeight={"bold"}>
@@ -52,7 +54,7 @@ const TravelSpots = () => {
         <TabPanels>
           <TabPanel>
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              {user.travelSpots.map((travelSpot) => (
+              {user.travelSpots.map((travelSpot: TravelSpot) => (
                 <GridItem key={travelSpot.id}>
                   <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} />
                 </GridItem>
@@ -61,7 +63,7 @@ const TravelSpots = () => {
           </TabPanel>
           <TabPanel>
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              {user.favoritedTravelSpots.map((travelSpot) => (
+              {user.favoritedTravelSpots.map((travelSpot: TravelSpot) => (
                 <GridItem key={travelSpot.id}>
                   <TravelSpotCard travelSpot={travelSpot} mutate={{ mutate, url: apiUrl }} />
                 </GridItem>
@@ -75,7 +77,7 @@ const TravelSpots = () => {
           </TabPanel>
           <TabPanel>
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              {user.followings.map((user) => (
+              {user.followings.map((user: User) => (
                 <GridItem key={user.id}>
                   <UserCard user={user} mutate={{ mutate, url: apiUrl }} />
                 </GridItem>
@@ -84,7 +86,7 @@ const TravelSpots = () => {
           </TabPanel>
           <TabPanel>
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              {user.followers.map((user) => (
+              {user.followers.map((user: User) => (
                 <GridItem key={user.id}>
                   <UserCard user={user} mutate={{ mutate, url: apiUrl }} />
                 </GridItem>

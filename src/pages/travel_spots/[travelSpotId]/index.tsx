@@ -39,7 +39,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 
-const TABS = ["旅行先詳細", "レビュー", "画像", "アクセス"];
+const TABS: string[] = ["旅行先詳細", "レビュー", "画像", "アクセス"];
 
 type sliderSettings = {
   dots: boolean;
