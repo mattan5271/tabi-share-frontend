@@ -58,6 +58,8 @@ export type Review = {
   body: string;
   rating: number;
   images: Image[];
+  user: User;
+  travelSpot: TravelSpot;
 };
 
 export type Favorite = {

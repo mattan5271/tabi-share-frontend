@@ -1,6 +1,8 @@
 import NextImage from "next/image";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
+import { VFC } from "react";
 import { useRecoilState } from "recoil";
+import { ScopedMutator } from "swr/dist/types";
 import Zoom from "react-medium-image-zoom";
 import { Rating } from "react-simple-star-rating";
 
@@ -8,24 +10,30 @@ import { userState } from "stores/userState";
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLink } from "components/other/NextLink";
 import { NextLinkButton } from "components/other/NextLinkButton";
+import { Image, Review, User } from "types";
 
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Box, HStack, Text, Grid, GridItem, Avatar } from "@chakra-ui/react";
 
-export const Reviews = (props) => {
-  const BASE_URL = "/reviews";
-  const router = useRouter();
-  const [currentUser] = useRecoilState(userState);
+type Props = {
+  reviews: Review[];
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const Reviews: VFC<Props> = (props) => {
+  const BASE_URL: string = "/reviews";
+  const router: NextRouter = useRouter();
+  const [currentUser] = useRecoilState<User | null>(userState);
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteReview = (reviewId) => {
+  const deleteReview = (reviewId: number): void => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${reviewId}`, modelJa: "レビュー", modelEn: "review", mutate: props.mutate });
   };
 
   return (
     <Box>
-      {props.reviews.map((review) => (
+      {props.reviews.map((review: Review) => (
         <Box maxW={"100%"} p={6} mb={3} rounded={"md"} border="1px" borderColor={"gray"} key={review.id}>
           {router.pathname.match(/users/) && (
             <NextLink href={`/travel_spots/${review.travelSpot.id}`}>
@@ -45,7 +53,7 @@ export const Reviews = (props) => {
           {router.pathname.match(/travel_spots/) && (
             <NextLink href={`/users/${review.user.id}`}>
               <HStack>
-                <Avatar src={review.user.profileImage.url || "/no_user_profile_image.png"} alt={`${review.user.name}のプロフィール画像`} size="md" />
+                <Avatar src={review.user.profileImage.url || "/no_user_profile_image.png"} size="md" />
                 <Text fontWeight={"bold"}>{review.user.name} さん</Text>
               </HStack>
             </NextLink>
@@ -67,7 +75,7 @@ export const Reviews = (props) => {
           </Box>
 
           <Grid templateColumns="repeat(4, 1fr)" gap={2} mt={3}>
-            {review.images.map((image, index) => (
+            {review.images.map((image: Image, index: number) => (
               <GridItem key={index}>
                 <Zoom zoomMargin={30}>
                   <NextImage src={image.url} alt={`${review.title}の画像${index}`} width={100} height={100} />
@@ -76,7 +84,7 @@ export const Reviews = (props) => {
             ))}
           </Grid>
 
-          {currentUser.id === review.user.id && (
+          {currentUser?.id === review.user.id && (
             <HStack alignItems={"center"} mt={3}>
               <NextLinkButton href={`${BASE_URL}/${review.id}/edit`} colorScheme={"green"} icon={<EditIcon />}>
                 編集
