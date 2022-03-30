@@ -1,6 +1,6 @@
 import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { NextRouter, useRouter } from "next/router";
+import { useEffect, useState, VFC } from "react";
 import { useRecoilState } from "recoil";
 import toast from "react-hot-toast";
 
@@ -9,10 +9,17 @@ import { userState } from "stores/userState";
 import { NextLink as NextLinkComponent } from "components/other/NextLink";
 import { NextLinkButton } from "components/other/NextLinkButton";
 
+import { User } from "types";
+
 import { EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import { Box, Flex, Center, Stack, Link, Menu, MenuList, MenuItem, MenuButton, MenuDivider, Avatar } from "@chakra-ui/react";
 
-const ADMIN_NAV_LIST = [
+type AdminNavList = {
+  title: string;
+  href: string;
+};
+
+const ADMIN_NAV_LIST: AdminNavList[] = [
   {
     title: "ユーザー一覧",
     href: "/admin/users",
@@ -31,12 +38,12 @@ const ADMIN_NAV_LIST = [
   },
 ];
 
-export const NavBar = () => {
-  const [loginUser, setLoginUser] = useState();
-  const router = useRouter();
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+export const NavBar: VFC = () => {
+  const [loginUser, setLoginUser] = useState<User | null>(null);
+  const router: NextRouter = useRouter();
+  const [currentUser, setCurrentUser] = useRecoilState<User | null>(userState);
 
-  const signOut = () => {
+  const signOut = (): void => {
     if (!confirm("ログアウトしますか？")) return;
     client
       .delete("/sign_out")
@@ -51,7 +58,7 @@ export const NavBar = () => {
       });
   };
 
-  const AuthButtons = () => {
+  const AuthButtons = (): JSX.Element => {
     return (
       <>
         <NextLinkButton href={"/sign_up"} colorScheme={"green"} icon={<EditIcon />}>
@@ -64,14 +71,19 @@ export const NavBar = () => {
     );
   };
 
-  const AdminLinks = () => {
-    return ADMIN_NAV_LIST.map((navItem) => (
-      <NextLink href={navItem.href} passHref key={navItem.href}>
-        <Link px={2} py={4} rounded={"md"} _hover={{ textDecoration: "none", bg: "blue.400" }}>
-          {navItem.title}
-        </Link>
-      </NextLink>
-    ));
+  const AdminLinks = (): JSX.Element => {
+    return (
+      <>
+        {ADMIN_NAV_LIST.map((navItem: AdminNavList) => (
+          <NextLink href={navItem.href} passHref key={navItem.href}>
+            <Link px={2} py={4} rounded={"md"} _hover={{ textDecoration: "none", bg: "blue.400" }}>
+              {navItem.title}
+            </Link>
+          </NextLink>
+        ))}
+        ;
+      </>
+    );
   };
 
   useEffect(() => setLoginUser(currentUser), [currentUser]);
