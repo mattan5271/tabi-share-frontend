@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "stores/userState";
+import { User } from "types";
 
 export const useAdminAuthControl = () => {
-  const router = useRouter();
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const router: NextRouter = useRouter();
+  const [currentUser] = useRecoilState<User>(userState);
 
   // 管理者ページの制御
   useEffect(() => {
