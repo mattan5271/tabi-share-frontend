@@ -31,7 +31,7 @@ const AdminReviewEdit: NextPage = () => {
   const { data: users, error: userError, isLoading: userIsLoading } = useGetRequest("/admin/users");
   const { data: travelSpots, error: travelSpotError, isLoading: travelSpotIsLoading } = useGetRequest("/admin/travel_spots");
 
-  const onSubmit = (inputData: Review) => {
+  const onSubmit = (inputData: Review): void => {
     handlePatchRequest({
       apiUrl: `${BASE_URL}/${reviewId}`,
       params: { ...inputData, images, rating },

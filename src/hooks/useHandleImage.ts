@@ -9,7 +9,7 @@ type UploadProps = {
 
 type DeleteProps = {
   deleteImageUrl: string;
-  setPrevieImgState: React.Dispatch<React.SetStateAction<string | string[]>>;
+  setPrevieImgState: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export const useHandleImage = () => {
