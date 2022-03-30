@@ -3,7 +3,7 @@ import { VFC } from "react";
 import { VStack, Spinner, Text } from "@chakra-ui/react";
 
 type Props = {
-  text: string;
+  text?: string;
 };
 
 export const LoadingSpinner: VFC<Props> = (props) => {
