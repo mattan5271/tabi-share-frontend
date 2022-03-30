@@ -1,11 +1,18 @@
 import NextImage from "next/image";
+import { ReactNode, VFC } from "react";
 
 import { NextLink } from "components/other/NextLink";
 
 import { FaTwitter, FaGithub } from "react-icons/fa";
 import { Box, chakra, Container, Stack, VStack, Text, VisuallyHidden } from "@chakra-ui/react";
 
-const SocialButton = ({ children, label, href }) => {
+type Props = {
+  children: ReactNode;
+  label: string;
+  href: string;
+};
+
+const SocialButton: VFC<Props> = (props) => {
   return (
     <chakra.button
       bg="blackAlpha.100"
@@ -14,7 +21,7 @@ const SocialButton = ({ children, label, href }) => {
       h={8}
       cursor={"pointer"}
       as={"a"}
-      href={href}
+      href={props.href}
       display={"inline-flex"}
       alignItems={"center"}
       justifyContent={"center"}
@@ -24,13 +31,13 @@ const SocialButton = ({ children, label, href }) => {
       }}
       target="_blank"
     >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
+      <VisuallyHidden>{props.label}</VisuallyHidden>
+      {props.children}
     </chakra.button>
   );
 };
 
-export const Footer = () => {
+export const Footer: VFC = () => {
   return (
     <Box bg="gray.300" color="white.700">
       <Container as={Stack} maxW={"6xl"} py={4} spacing={4} justify={"center"} align={"center"}>
