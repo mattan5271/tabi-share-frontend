@@ -1,17 +1,25 @@
 import NextImage from "next/image";
+import { VFC } from "react";
+import { ScopedMutator } from "swr/dist/types";
 
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLink } from "components/other/NextLink";
 import { NextLinkButton } from "components/other/NextLinkButton";
+import { Review } from "types";
 
 import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption } from "@chakra-ui/react";
 
-export const ReviewsTable = (props) => {
-  const BASE_URL = "/admin/reviews";
+type Props = {
+  reviews: Review[];
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const ReviewsTable: VFC<Props> = (props) => {
+  const BASE_URL: string = "/admin/reviews";
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteReview = (reviewId) => {
+  const deleteReview = (reviewId: number): void => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${reviewId}`, modelJa: "レビュー", modelEn: "review", mutate: props.mutate });
   };
@@ -37,11 +45,11 @@ export const ReviewsTable = (props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {props.reviews.map((review) => (
+          {props.reviews.map((review: Review) => (
             <Tr key={review.id}>
               <Td>{review.id}</Td>
               <Td>
-                <NextImage src={!review.images.length ? "/no_image.jpeg" : review.images[0].url} alt={`${review.name}のメイン画像`} width={100} height={100} />
+                <NextImage src={!review.images.length ? "/no_image.jpeg" : review.images[0].url} alt={`${review.title}のメイン画像`} width={100} height={100} />
               </Td>
               <Td>{review.title}</Td>
               <Td>
