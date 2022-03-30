@@ -10,7 +10,7 @@ import { userState } from "stores/userState";
 
 type Props = {
   apiUrl: string;
-  params: any;
+  params?: any;
   modelJa: string;
   modelEn: string;
   redirectPath?: string;

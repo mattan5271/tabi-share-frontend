@@ -1,16 +1,24 @@
 import NextImage from "next/image";
+import { VFC } from "react";
+import { ScopedMutator } from "swr/dist/types";
 
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLinkButton } from "components/other/NextLinkButton";
+import { Genre } from "types";
 
 import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption } from "@chakra-ui/react";
 
-export const GenresTable = (props) => {
-  const BASE_URL = "/admin/genres";
+type Props = {
+  genres: Genre[];
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const GenresTable: VFC<Props> = (props) => {
+  const BASE_URL: string = "/admin/genres";
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteGenre = (genreId) => {
+  const deleteGenre = (genreId: number) => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${genreId}`, modelJa: "ジャンル", modelEn: "genre", mutate: props.mutate });
   };
@@ -33,7 +41,7 @@ export const GenresTable = (props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {props.genres.map((genre) => (
+          {props.genres.map((genre: Genre) => (
             <Tr key={genre.id}>
               <Td>{genre.id}</Td>
               <Td>

@@ -1,8 +1,9 @@
 import { useRouter, NextRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
-import { client } from "libs/client";
 import { ScopedMutator } from "swr/dist/types";
 import { AxiosResponse } from "axios";
+
+import { client } from "libs/client";
 
 type SWR = {
   data: any;
