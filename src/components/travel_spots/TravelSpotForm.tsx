@@ -1,14 +1,48 @@
 import NextImage from "next/image";
 import Script from "next/script";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
+import { ChangeEvent, Dispatch, SetStateAction, VFC } from "react";
+import { FieldError, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 
 import { useHandleImage } from "hooks/useHandleImage";
+import { Genre, Prefecture, TravelSpot, User } from "types";
 
 import { DownloadIcon, PlusSquareIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Grid, GridItem, VStack, Button, IconButton, Badge, Input, Textarea, Select, FormControl, FormLabel, FormErrorMessage, Center } from "@chakra-ui/react";
 
-export const TravelSpotForm = (props) => {
-  const router = useRouter();
+type Props = {
+  users: User[];
+  genres: Genre[];
+  prefectures: Prefecture[];
+  setImages: Dispatch<SetStateAction<File[]>>;
+  previewImageUrls: string[];
+  setPreviewImageUrls: Dispatch<SetStateAction<string[]>>;
+  handleSubmit: UseFormHandleSubmit<TravelSpot>;
+  onSubmit: (inputData: TravelSpot) => void;
+  register: UseFormRegister<TravelSpot>;
+  errors: {
+    id?: FieldError | undefined;
+    userId?: FieldError | undefined;
+    genreId?: FieldError | undefined;
+    name?: FieldError | undefined;
+    postcode?: FieldError | undefined;
+    prefectureCode?: FieldError | undefined;
+    addressCity?: FieldError | undefined;
+    addressStreet?: FieldError | undefined;
+    addressBuilding?: FieldError | undefined;
+    fullAddress?: FieldError | undefined;
+    introduction?: FieldError | undefined;
+    access?: FieldError | undefined;
+    phoneNumber?: FieldError | undefined;
+    businessHour?: FieldError | undefined;
+    parking?: FieldError | undefined;
+    homePage?: FieldError | undefined;
+    images?: { url?: FieldError | undefined }[] | undefined;
+  };
+};
+
+export const TravelSpotForm: VFC<Props> = (props) => {
+  const router: NextRouter = useRouter();
   const { uploadImage, deleteImage } = useHandleImage();
 
   return (
@@ -22,21 +56,22 @@ export const TravelSpotForm = (props) => {
             accept="image/*"
             multiple
             display="none"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               uploadImage({ event, isMultiple: true, setImgState: props.setImages, setPrevieImgState: props.setPreviewImageUrls });
             }}
           />
-          <Button colorScheme="orange" mb={4} onClick={() => document.getElementById("travel_spot_images").click()}>
+          <Button colorScheme="orange" mb={4} onClick={() => document.getElementById("travel_spot_images")?.click()}>
             <PlusSquareIcon mr={1} />
             画像アップロード
           </Button>
         </VStack>
 
         <Grid my={4} templateColumns="repeat(4, 1fr)" gap={3}>
-          {props.previewImageUrls.map((url, index) => (
+          {props.previewImageUrls.map((url: string, index: number) => (
             <GridItem key={index}>
               <NextImage src={url} alt={`プレビュー画像${index}`} width={300} height={300} />
               <IconButton
+                aria-label="delete_image"
                 icon={<CloseIcon />}
                 onClick={() => {
                   deleteImage({ deleteImageUrl: url, setPrevieImgState: props.setPreviewImageUrls });
