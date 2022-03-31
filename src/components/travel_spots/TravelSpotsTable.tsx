@@ -1,17 +1,25 @@
 import NextImage from "next/image";
+import { VFC } from "react";
+import { ScopedMutator } from "swr/dist/types";
 
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLink } from "components/other/NextLink";
 import { NextLinkButton } from "components/other/NextLinkButton";
+import { TravelSpot } from "types";
 
 import { AddIcon, EditIcon, DeleteIcon, ChatIcon } from "@chakra-ui/icons";
 import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption } from "@chakra-ui/react";
 
-export const TravelSpotsTable = (props) => {
-  const BASE_URL = "/admin/travel_spots";
+type Props = {
+  travelSpots: TravelSpot[];
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const TravelSpotsTable: VFC<Props> = (props) => {
+  const BASE_URL: string = "/admin/travel_spots";
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteTravelSpot = (travelSpotId) => {
+  const deleteTravelSpot = (travelSpotId: number): void => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${travelSpotId}`, modelJa: "旅行先", modelEn: "travel_spot", mutate: props.mutate });
   };
@@ -38,7 +46,7 @@ export const TravelSpotsTable = (props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {props.travelSpots.map((travelSpot) => (
+          {props.travelSpots.map((travelSpot: TravelSpot) => (
             <Tr key={travelSpot.id}>
               <Td>{travelSpot.id}</Td>
               <Td>
