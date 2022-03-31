@@ -1,10 +1,18 @@
+import { VFC } from "react";
+import { ScopedMutator } from "swr/dist/types";
 import ShowMoreText from "react-show-more-text";
 
 import { UserFollowButton } from "components/users/UserFollowButton";
+import { User } from "types";
 
 import { Heading, Avatar, Box, Center, Image, Flex, Text, Stack } from "@chakra-ui/react";
 
-export const UserCard = (props) => {
+type Props = {
+  user: User;
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const UserCard: VFC<Props> = (props) => {
   return (
     <Center py={6}>
       <Box maxW={"270px"} w={"full"} boxShadow={"2xl"} rounded={"md"} overflow={"hidden"}>
@@ -18,7 +26,6 @@ export const UserCard = (props) => {
           <Avatar
             size={"xl"}
             src={props.user.profileImage.url || "/no_user_profile_image.png"}
-            alt={`${props.user.name}のプロフィール画像`}
             css={{
               border: "2px solid white",
             }}
