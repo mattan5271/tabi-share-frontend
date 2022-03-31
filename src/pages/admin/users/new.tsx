@@ -10,7 +10,7 @@ import { User } from "types";
 const AdminUserNew: NextPage = () => {
   useAdminAuthControl();
   const BASE_URL: string = "/admin/users";
-  const [profileImage, setProfileImage] = useState<File>();
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePostRequest } = useHandleRequest();
   const {

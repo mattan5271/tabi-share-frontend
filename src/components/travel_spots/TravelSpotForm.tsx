@@ -21,7 +21,6 @@ type Props = {
   onSubmit: (inputData: TravelSpot) => void;
   register: UseFormRegister<TravelSpot>;
   errors: {
-    id?: FieldError | undefined;
     userId?: FieldError | undefined;
     genreId?: FieldError | undefined;
     name?: FieldError | undefined;
@@ -30,14 +29,12 @@ type Props = {
     addressCity?: FieldError | undefined;
     addressStreet?: FieldError | undefined;
     addressBuilding?: FieldError | undefined;
-    fullAddress?: FieldError | undefined;
     introduction?: FieldError | undefined;
     access?: FieldError | undefined;
     phoneNumber?: FieldError | undefined;
     businessHour?: FieldError | undefined;
     parking?: FieldError | undefined;
     homePage?: FieldError | undefined;
-    images?: { url?: FieldError | undefined }[] | undefined;
   };
 };
 

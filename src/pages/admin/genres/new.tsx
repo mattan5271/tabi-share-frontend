@@ -10,7 +10,7 @@ import { Genre } from "types";
 const AdminGenreNew: NextPage = () => {
   useAdminAuthControl();
   const BASE_URL: string = "/admin/genres";
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePostRequest } = useHandleRequest();
   const {

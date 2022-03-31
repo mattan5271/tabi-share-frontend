@@ -16,7 +16,7 @@ const AdminGenreEdit: NextPage = () => {
   const BASE_URL: string = "/admin/genres";
   const router: NextRouter = useRouter();
   const genreId: string | string[] | undefined = router.query.genreId;
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePatchRequest } = useHandleRequest();
   const {

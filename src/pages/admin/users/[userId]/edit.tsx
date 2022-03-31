@@ -16,7 +16,7 @@ const AdminUserEdit: NextPage = () => {
   const BASE_URL: string = "/admin/users";
   const router: NextRouter = useRouter();
   const userId: string | string[] | undefined = router.query.userId;
-  const [profileImage, setProfileImage] = useState<File>();
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
   const { handlePatchRequest } = useHandleRequest();
   const {

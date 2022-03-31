@@ -8,16 +8,14 @@ import { DownloadIcon } from "@chakra-ui/icons";
 import { Box, VStack, Button, Input, FormControl, FormLabel, FormErrorMessage, Center, Badge, Avatar } from "@chakra-ui/react";
 
 type Props = {
-  setImage: Dispatch<SetStateAction<File | undefined>>;
+  setImage: Dispatch<SetStateAction<File | null>>;
   previewImageUrl: string;
   setPreviewImageUrl: Dispatch<SetStateAction<string>>;
   handleSubmit: UseFormHandleSubmit<Genre>;
   onSubmit: (inputData: Genre) => void;
   register: UseFormRegister<Genre>;
   errors: {
-    id?: FieldError | undefined;
     name?: FieldError | undefined;
-    image?: { url?: FieldError | undefined } | undefined;
   };
 };
 

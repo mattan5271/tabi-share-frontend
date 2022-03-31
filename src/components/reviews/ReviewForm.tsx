@@ -22,13 +22,10 @@ type Props = {
   onSubmit: (inputData: Review) => void;
   register: UseFormRegister<Review>;
   errors: {
-    id?: FieldError | undefined;
     userId?: FieldError | undefined;
     travelSpotId?: FieldError | undefined;
     title?: FieldError | undefined;
     body?: FieldError | undefined;
-    rating?: FieldError | undefined;
-    images?: { url?: FieldError | undefined }[] | undefined;
   };
 };
 
