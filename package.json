@@ -14,6 +14,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@react-google-maps/api": "^2.7.0",
+    "@types/googlemaps": "^3.43.3",
     "axios": "^0.26.1",
     "axios-case-converter": "^0.9.0",
     "framer-motion": "^6",
