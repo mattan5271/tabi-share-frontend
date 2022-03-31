@@ -1,8 +1,15 @@
+import { VFC } from "react";
+
 import { NextLink } from "components/other/NextLink";
+import { TravelSpot } from "types";
 
 import { DrawerBody, DrawerHeader, DrawerContent, DrawerCloseButton, Table, Tr, Th, Td } from "@chakra-ui/react";
 
-export const TravelSpotDetail = (props) => {
+type Props = {
+  travelSpot: TravelSpot;
+};
+
+export const TravelSpotDetail: VFC<Props> = (props) => {
   return (
     <DrawerContent>
       <DrawerCloseButton />
