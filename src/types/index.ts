@@ -51,6 +51,8 @@ export type User = {
   travelSpots: TravelSpot[];
   reviews: Review[];
   favorites: Favorite[];
+  followings: User[];
+  followers: User[];
 };
 
 export type Review = {
