@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, VFC } from "react";
 import { GoogleMap as Map, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
 import { NextLink } from "components/other/NextLink";
 import { LoadingSpinner } from "components/other/LoadingSpinner";
+import { TravelSpot } from "types";
 
 import { Box, Text } from "@chakra-ui/react";
 
-export const GoogleMap = (props) => {
-  const [mapSize, setMapSize] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState({ lat: null, lng: null });
+type Props = {
+  travelSpots: TravelSpot[];
+  zoom: number;
+};
+
+export const GoogleMap: VFC<Props> = (props) => {
+  const [mapSize, setMapSize] = useState<google.maps.Size | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -23,9 +29,9 @@ export const GoogleMap = (props) => {
   if (!currentLocation.lat || !currentLocation.lng) return <LoadingSpinner text={"現在地取得中..."} />;
 
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => setMapSize(new window.google.maps.Size(0, -45))}>
+    <LoadScript googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`} onLoad={() => setMapSize(new window.google.maps.Size(0, -45))}>
       <Map mapContainerStyle={{ width: "100%", height: "50vh" }} center={currentLocation} zoom={props.zoom}>
-        {props.travelSpots.map((travelSpot) => (
+        {props.travelSpots.map((travelSpot: TravelSpot) => (
           <Box key={travelSpot.id}>
             <Marker position={{ lat: travelSpot.latitude, lng: travelSpot.longitude }} />
             <InfoWindow position={{ lat: travelSpot.latitude, lng: travelSpot.longitude }} options={{ pixelOffset: mapSize }}>
