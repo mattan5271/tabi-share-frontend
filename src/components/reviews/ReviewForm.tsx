@@ -36,7 +36,7 @@ export const ReviewForm: VFC<Props> = (props) => {
   const router: NextRouter = useRouter();
   const { uploadImage, deleteImage } = useHandleImage();
 
-  const ratingChanged = (rating: number) => props.setRating(rating / 20); // 0~100で返ってくるので、5段階評価にするために20で割る
+  const ratingChanged = (rating: number): void => props.setRating(rating / 20); // 0~100で返ってくるので、5段階評価にするために20で割る
 
   return (
     <Box>
