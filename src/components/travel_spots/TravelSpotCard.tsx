@@ -1,5 +1,7 @@
 import NextImage from "next/image";
+import { VFC } from "react";
 import { useRecoilState } from "recoil";
+import { ScopedMutator } from "swr/dist/types";
 import { Rating } from "react-simple-star-rating";
 
 import { userState } from "stores/userState";
@@ -7,16 +9,22 @@ import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLink } from "components/other/NextLink";
 import { NextLinkButton } from "components/other/NextLinkButton";
 import { TravelSpotFavoriteButton } from "components/travel_spots/TravelSpotFavoriteButton";
+import { TravelSpot, User } from "types";
 
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Box, Text, Badge, HStack, Avatar } from "@chakra-ui/react";
 
-export const TravelSpotCard = (props) => {
-  const BASE_URL = "/travel_spots";
-  const [currentUser] = useRecoilState(userState);
+type Props = {
+  travelSpot: TravelSpot;
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const TravelSpotCard: VFC<Props> = (props) => {
+  const BASE_URL: string = "/travel_spots";
+  const [currentUser] = useRecoilState<User | null>(userState);
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteTravelSpot = (travelSpotId) => {
+  const deleteTravelSpot = (travelSpotId: number): void => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${travelSpotId}`, modelJa: "旅行先", modelEn: "travel_spot", mutate: props.mutate });
   };
@@ -53,10 +61,10 @@ export const TravelSpotCard = (props) => {
           </NextLink>
 
           <NextLink href={`/users/${props.travelSpot.user.id}`}>
-            <Avatar src={props.travelSpot.user.profileImage.url || "/no_user_profile_image.png"} alt={`${props.travelSpot.user.name}のプロフィール画像`} size="md" />
+            <Avatar src={props.travelSpot.user.profileImage.url || "/no_user_profile_image.png"} size="md" />
           </NextLink>
         </Flex>
-        {currentUser.id === props.travelSpot.user.id && (
+        {currentUser?.id === props.travelSpot.user.id && (
           <HStack alignItems={"center"} mt={3}>
             <NextLinkButton href={`/travel_spots/${props.travelSpot.id}/edit`} colorScheme={"green"} icon={<EditIcon />}>
               編集
