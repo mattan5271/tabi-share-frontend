@@ -30,6 +30,8 @@ export type TravelSpot = {
   homePage: string;
   latitude: number;
   longitude: number;
+  genre: Genre;
+  user: User;
   reviews: Review[];
   favorites: Favorite[];
 };
@@ -46,6 +48,7 @@ export type User = {
   introduction: string;
   profileImage: Image;
   isAdmin: boolean;
+  travelSpots: TravelSpot[];
   reviews: Review[];
   favorites: Favorite[];
 };
@@ -66,4 +69,10 @@ export type Favorite = {
   id: number;
   userId: number;
   travelSpotId: number;
+};
+
+export type Prefecture = {
+  id: number;
+  code: number;
+  name: string;
 };
