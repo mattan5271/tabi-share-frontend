@@ -1,8 +1,15 @@
+import { VFC } from "react";
+
 import { GoogleMap } from "components/travel_spots/GoogleMap";
+import { TravelSpot } from "types";
 
 import { Box, HStack, Heading, Text } from "@chakra-ui/react";
 
-export const Access = (props) => {
+type Props = {
+  travelSpot: TravelSpot;
+};
+
+export const Access: VFC<Props> = (props) => {
   return (
     <Box>
       <HStack mb={4}>
