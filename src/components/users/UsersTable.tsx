@@ -1,17 +1,24 @@
-import NextLink from "next/link";
 import NextImage from "next/image";
+import { VFC } from "react";
+import { ScopedMutator } from "swr/dist/types";
 
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { NextLinkButton } from "components/other/NextLinkButton";
+import { User } from "types";
 
 import { AddIcon, EditIcon, DeleteIcon, ChatIcon, LinkIcon } from "@chakra-ui/icons";
 import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption } from "@chakra-ui/react";
 
-export const UsersTable = (props) => {
-  const BASE_URL = "/admin/users";
+type Props = {
+  users: User[];
+  mutate: { mutate: ScopedMutator<any>; url: string };
+};
+
+export const UsersTable: VFC<Props> = (props) => {
+  const BASE_URL: string = "/admin/users";
   const { handleDeleteRequest } = useHandleRequest();
 
-  const deleteUser = (userId) => {
+  const deleteUser = (userId: number) => {
     if (!confirm("本当に削除しますか？")) return;
     handleDeleteRequest({ apiUrl: `${BASE_URL}/${userId}`, modelJa: "ユーザー", modelEn: "user", mutate: props.mutate });
   };
@@ -39,7 +46,7 @@ export const UsersTable = (props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {props.users.map((user) => (
+          {props.users.map((user: User) => (
             <Tr key={user.id}>
               <Td>{user.id}</Td>
               <Td>
