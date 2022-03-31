@@ -1,19 +1,41 @@
-import NextImage from "next/image";
+import { ChangeEvent, Dispatch, SetStateAction, VFC } from "react";
 import { useRecoilState } from "recoil";
+import { ScopedMutator } from "swr/dist/types";
+import { FieldError, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 
 import { useHandleRequest } from "hooks/useHandleRequest";
 import { useHandleImage } from "hooks/useHandleImage";
 import { userState } from "stores/userState";
+import { User } from "types";
 
 import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Box, HStack, VStack, Button, Badge, Input, Select, FormControl, FormLabel, FormErrorMessage, Checkbox, Textarea, Avatar } from "@chakra-ui/react";
 
-export const UserForm = (props) => {
-  const [currentUser] = useRecoilState(userState);
+type Props = {
+  user: User;
+  mutate: { mutate: ScopedMutator<any>; url: string };
+  setProfileImage: Dispatch<SetStateAction<File | null>>;
+  previewImageUrl: string;
+  setPreviewImageUrl: Dispatch<SetStateAction<string>>;
+  handleSubmit: UseFormHandleSubmit<User>;
+  onSubmit: (inputData: User) => void;
+  register: UseFormRegister<User>;
+  errors: {
+    email: FieldError | undefined;
+    password: FieldError | undefined;
+    name: FieldError | undefined;
+    sex: FieldError | undefined;
+    age: FieldError | undefined;
+    introduction: FieldError | undefined;
+  };
+};
+
+export const UserForm: VFC<Props> = (props) => {
+  const [currentUser] = useRecoilState<User | null>(userState);
   const { handleDeleteRequest } = useHandleRequest();
   const { uploadImage } = useHandleImage();
 
-  const deleteUser = (userId) => {
+  const deleteUser = (userId: number): void => {
     if (!confirm("本当に退会しますか？")) return;
     handleDeleteRequest({ apiUrl: `/users/${userId}`, modelJa: "ユーザー", modelEn: "user", mutate: props.mutate });
   };
@@ -27,16 +49,11 @@ export const UserForm = (props) => {
             type="file"
             accept="image/*"
             display="none"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               uploadImage({ event, isMultiple: false, setImgState: props.setProfileImage, setPrevieImgState: props.setPreviewImageUrl });
             }}
           />
-          <Avatar
-            src={props.previewImageUrl || "/no_user_profile_image.png"}
-            alt={"プロフィール画像"}
-            size="3xl"
-            onClick={() => document.getElementById("user_profile_image").click()}
-          />
+          <Avatar src={props.previewImageUrl || "/no_user_profile_image.png"} size="3xl" onClick={() => document.getElementById("user_profile_image")?.click()} />
         </VStack>
 
         <FormControl isInvalid={!!props.errors.email} mb={4}>
