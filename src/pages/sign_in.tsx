@@ -44,7 +44,7 @@ const SignIn: VFC = () => {
       alert("既にサインイン済みです");
       router.push("/");
     }
-  }, []);
+  }, [currentUser, router]);
 
   return (
     <>

@@ -46,7 +46,7 @@ const SignUp: VFC = () => {
       alert("既にサインイン済みです");
       router.push("/");
     }
-  }, []);
+  }, [currentUser, router]);
 
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"gray.50"}>

@@ -44,7 +44,7 @@ const AdminUserEdit: NextPage = () => {
       reset(user); // フォームに初期値を入れる
       if (!previewImageUrl) setPreviewImageUrl(user.profileImage.url);
     }
-  }, [user]);
+  }, [reset, user, previewImageUrl]);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <Error statusCode={error?.response?.status || 500} />;

@@ -12,8 +12,8 @@ import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Box, HStack, VStack, Button, Badge, Input, Select, FormControl, FormLabel, FormErrorMessage, Checkbox, Textarea, Avatar } from "@chakra-ui/react";
 
 type Props = {
-  user: User;
-  mutate: { mutate: ScopedMutator<any>; url: string };
+  user?: User;
+  mutate?: { mutate: ScopedMutator<any>; url: string };
   setProfileImage: Dispatch<SetStateAction<File | null>>;
   previewImageUrl: string;
   setPreviewImageUrl: Dispatch<SetStateAction<string>>;
@@ -21,12 +21,13 @@ type Props = {
   onSubmit: (inputData: User) => void;
   register: UseFormRegister<User>;
   errors: {
-    email: FieldError | undefined;
-    password: FieldError | undefined;
-    name: FieldError | undefined;
-    sex: FieldError | undefined;
-    age: FieldError | undefined;
-    introduction: FieldError | undefined;
+    email?: FieldError | undefined;
+    password?: FieldError | undefined;
+    name?: FieldError | undefined;
+    sex?: FieldError | undefined;
+    age?: FieldError | undefined;
+    introduction?: FieldError | undefined;
+    isAdmin?: FieldError | undefined;
   };
 };
 
@@ -136,7 +137,7 @@ export const UserForm: VFC<Props> = (props) => {
             保存
           </Button>
           {props.user?.id === currentUser?.id && (
-            <Button colorScheme="red" leftIcon={<DeleteIcon />} onClick={() => deleteUser(props.user.id)}>
+            <Button colorScheme="red" leftIcon={<DeleteIcon />} onClick={() => props.user && deleteUser(props.user.id)}>
               退会
             </Button>
           )}

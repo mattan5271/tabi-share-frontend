@@ -19,6 +19,7 @@ export const UserCard: VFC<Props> = (props) => {
         <Image
           h={"120px"}
           w={"full"}
+          alt={`${props.user.name}のプロフィール画像`}
           src={"https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"}
           objectFit={"cover"}
         />
