@@ -74,7 +74,6 @@ export type Favorite = {
 };
 
 export type Prefecture = {
-  id: number;
   code: number;
   name: string;
 };
