@@ -97,6 +97,7 @@ export const TravelSpotForm: VFC<Props> = (props) => {
             </Badge>
           </FormLabel>
           <Input
+            // @ts-ignore
             onKeyUp={() => AjaxZip3.zip2addr("postcode", "", "prefectureCode", "addressCity")}
             {...props.register("postcode", {
               required: "郵便番号を入力してください",
