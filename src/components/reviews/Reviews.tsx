@@ -17,7 +17,7 @@ import { Box, HStack, Text, Grid, GridItem, Avatar } from "@chakra-ui/react";
 
 type Props = {
   reviews: Review[];
-  mutate: { mutate: ScopedMutator<any>; url: string };
+  mutate?: { mutate: ScopedMutator<any>; url: string };
 };
 
 export const Reviews: VFC<Props> = (props) => {

@@ -11,8 +11,8 @@ import { DownloadIcon, PlusSquareIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Grid, GridItem, VStack, Button, IconButton, Badge, Input, Textarea, Select, FormControl, FormLabel, FormErrorMessage, Text } from "@chakra-ui/react";
 
 type Props = {
-  users: User[];
-  travelSpots: TravelSpot[];
+  users?: User[];
+  travelSpots?: TravelSpot[];
   rating: number;
   setRating: Dispatch<SetStateAction<number>>;
   setImages: Dispatch<SetStateAction<File[]>>;
@@ -102,7 +102,7 @@ export const ReviewForm: VFC<Props> = (props) => {
               </FormLabel>
               <Select {...props.register("userId", { required: "投稿者を選択してください" })}>
                 <option></option>
-                {props.users.map((user) => (
+                {props.users?.map((user: User) => (
                   <option key={user.id} value={user.id}>
                     {user.name}
                   </option>
@@ -120,7 +120,7 @@ export const ReviewForm: VFC<Props> = (props) => {
               </FormLabel>
               <Select {...props.register("travelSpotId", { required: "旅行先を選択してください" })}>
                 <option></option>
-                {props.travelSpots.map((travelSpot) => (
+                {props.travelSpots?.map((travelSpot: TravelSpot) => (
                   <option key={travelSpot.id} value={travelSpot.id}>
                     {travelSpot.name}
                   </option>

@@ -48,7 +48,7 @@ const AdminReviewEdit: NextPage = () => {
       setRating(review.rating);
       if (previewImageUrls.length === 0) setPreviewImageUrls(review.images.map((image: Image) => image.url));
     }
-  }, [review]);
+  }, [reset, review, previewImageUrls]);
 
   if (reviewIsLoading || userIsLoading || travelSpotIsLoading) return <LoadingSpinner />;
   if (reviewError || userError || travelSpotError)
