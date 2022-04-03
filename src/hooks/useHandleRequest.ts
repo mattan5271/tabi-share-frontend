@@ -5,11 +5,10 @@ import { AxiosError, AxiosResponse } from "axios";
 import toast from "react-hot-toast";
 
 import { client } from "libs/client";
-import { useCreateFormData } from "hooks/useCreateFormData";
 import { userState } from "stores/userState";
 import { User } from "types";
 
-type Props = {
+type RequestProps = {
   apiUrl: string;
   params?: any;
   modelJa: string;
@@ -18,12 +17,33 @@ type Props = {
   mutate?: { mutate: ScopedMutator<any>; url: string };
 };
 
+type CreateFormDataProps = {
+  model: string;
+  params: {
+    key: string;
+    value: any;
+  };
+};
+
+export const createFormData = ({ model, params }: CreateFormDataProps) => {
+  const formData: FormData = new FormData();
+  Object.entries(params).map(([key, value]) => {
+    if (value == null || (Array.isArray(value) && !value.length)) return; // null、undefine、空配列の場合はパラメーターに乗せない
+    if (key.match(/images/)) {
+      value.map((image: File) => formData.append(`${model}[images][]`, image));
+    } else {
+      formData.append(`${model}[${key}]`, value);
+    }
+  });
+  return formData;
+};
+
 export const useHandleRequest = () => {
   const router: NextRouter = useRouter();
   const [currentUser, setCurrentUser] = useRecoilState<User | null>(userState);
 
-  const handlePostRequest = ({ apiUrl, params, modelJa, modelEn, redirectPath, mutate }: Props): Promise<void> => {
-    const formData = useCreateFormData({ model: modelEn, params: params });
+  const handlePostRequest = ({ apiUrl, params, modelJa, modelEn, redirectPath, mutate }: RequestProps): Promise<void> => {
+    const formData = createFormData({ model: modelEn, params: params });
     return client
       .post(apiUrl, formData)
       .then((res: AxiosResponse) => {
@@ -37,8 +57,8 @@ export const useHandleRequest = () => {
       });
   };
 
-  const handlePatchRequest = ({ apiUrl, params, modelJa, modelEn, redirectPath }: Props): Promise<void> => {
-    const formData = useCreateFormData({ model: modelEn, params: params });
+  const handlePatchRequest = ({ apiUrl, params, modelJa, modelEn, redirectPath }: RequestProps): Promise<void> => {
+    const formData = createFormData({ model: modelEn, params: params });
     return client
       .patch(apiUrl, formData)
       .then((res: AxiosResponse) => {
@@ -52,7 +72,7 @@ export const useHandleRequest = () => {
       });
   };
 
-  const handleDeleteRequest = ({ apiUrl, modelJa, modelEn, mutate }: Props): Promise<void> => {
+  const handleDeleteRequest = ({ apiUrl, modelJa, modelEn, mutate }: RequestProps): Promise<void> => {
     return client
       .delete(apiUrl)
       .then((res: AxiosResponse) => {

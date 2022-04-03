@@ -14,7 +14,7 @@ type DeleteProps = {
 
 export const useHandleImage = () => {
   const uploadImage = ({ event, isMultiple, setImgState, setPrevieImgState }: UploadProps) => {
-    if (!event) return;
+    if (!event.target.files) return;
     if (isMultiple) {
       const files: File[] = Array.from(event.target.files);
       setImgState(files);
