@@ -42,7 +42,7 @@ const AdminGenreEdit: NextPage = () => {
   useEffect(() => {
     reset(genre);
     if (genre && !previewImageUrl) setPreviewImageUrl(genre.image?.url);
-  }, [genre]);
+  }, [reset, genre, previewImageUrl]);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <Error statusCode={error?.response?.status || 500} />;
