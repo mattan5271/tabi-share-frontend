@@ -76,6 +76,7 @@ export const ReviewForm: VFC<Props> = (props) => {
               必須
             </Badge>
           </FormLabel>
+          {/* @ts-ignore */}
           <Input {...props.register("title", { required: "タイトルを入力してください", maxLength: { value: 30, message: "30文字以内にしてください" } })} />
           <FormErrorMessage>{props.errors.title?.message}</FormErrorMessage>
         </FormControl>
