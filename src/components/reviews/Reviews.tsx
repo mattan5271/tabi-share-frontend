@@ -60,6 +60,7 @@ export const Reviews: VFC<Props> = (props) => {
           )}
 
           <HStack alignItems={"center"} mt={3}>
+            {/* @ts-ignore */}
             <Rating size={25} initialValue={review.rating} readonly={true} />
             <Text pb={1} fontWeight={"bold"}>
               {review.rating.toFixed(1)}

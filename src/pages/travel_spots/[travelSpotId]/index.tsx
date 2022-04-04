@@ -143,6 +143,7 @@ const TravelSpot: NextPage = () => {
             </TwitterShareButton>
           </HStack>
 
+          {/* @ts-ignore */}
           <Rating size={30} initialValue={travelSpot.rating} readonly={true} />
         </VStack>
 

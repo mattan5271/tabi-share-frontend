@@ -55,6 +55,7 @@ export const TravelSpotCard: VFC<Props> = (props) => {
         <Flex mt={3} justifyContent="space-between" alignItems="center">
           <NextLink href={`/travel_spots/${props.travelSpot.id}`}>
             <HStack>
+              {/* @ts-ignore */}
               <Rating size={25} initialValue={props.travelSpot.rating} readonly={true} />
               <Text fontSize={"sm"}>{props.travelSpot.reviews.length}レビュー</Text>
             </HStack>

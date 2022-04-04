@@ -136,6 +136,7 @@ export const ReviewForm: VFC<Props> = (props) => {
           <Text fontSize="xl" fontWeight={"bold"}>
             評価
           </Text>
+          {/* @ts-ignore */}
           <Rating size={50} initialValue={props.rating} allowHalfIcon={true} onClick={ratingChanged} />
         </VStack>
 
