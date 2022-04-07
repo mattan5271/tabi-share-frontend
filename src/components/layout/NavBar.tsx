@@ -81,7 +81,6 @@ export const NavBar: VFC = () => {
             </Link>
           </NextLink>
         ))}
-        ;
       </>
     );
   };
