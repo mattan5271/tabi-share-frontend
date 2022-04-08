@@ -47,7 +47,7 @@ const AdminTravelSpotEdit: NextPage = () => {
       reset(travelSpot);
       if (previewImageUrls.length === 0) setPreviewImageUrls(travelSpot.images.map((image: Image) => image.url));
     }
-  }, [reset, travelSpot, previewImageUrls]);
+  }, []);
 
   if (travelSpotIsLoading || userIsLoading || genreIsLoading || prefectureIsLoading) return <LoadingSpinner />;
   if (travelSpotError || userError || genreError || prefectureError) {
